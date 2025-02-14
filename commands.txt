@@ -1,0 +1,17 @@
+git config --global user.name gallojunior
+git config --global user.email gallojunior@gmail.com
+
+dotnet new sln --name GStore
+dotnet new mvc -o GStore
+dotnet sln add GStore\GStore.csproj
+
+cd GStore
+
+dotnet add package Microsoft.EntityFrameworkCore --version 9.0.2
+dotnet add package Microsoft.EntityFrameworkCore.Design --version 9.0.2
+dotnet add package Microsoft.EntityFrameworkCore.Tools --version 9.0.2
+dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore --version 9.0.2
+dotnet add package MySql.EntityFrameworkCore --version 9.0.0
+
+Criar as classes da camada de dados (Models)
+
