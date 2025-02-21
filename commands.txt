@@ -15,3 +15,15 @@ dotnet add package MySql.EntityFrameworkCore --version 9.0.0
 
 Criar as classes da camada de dados (Models)
 
+Criar a classe de contexto
+
+Configura a ConnectionString appsettings.json
+
+Configura os serviços de Context e Identity no Program.cs
+
+cd GStore
+
+Executar o Xampp e o MySql
+
+dotnet watch run
+
