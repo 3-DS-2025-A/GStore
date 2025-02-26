@@ -1,21 +1,29 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using GStore.Models;
+using GStore.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace GStore.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly AppDbContext _db;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, AppDbContext db)
     {
         _logger = logger;
+        _db = db;
     }
 
     public IActionResult Index()
     {
-        return View();
+        List<Produto> produtos = _db.Produtos
+            .Where(p => p.Destaque)
+            .Include(p => p.Fotos)
+            .ToList();
+        return View(produtos);
     }
 
     public IActionResult Privacy()
