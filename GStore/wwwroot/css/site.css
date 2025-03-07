@@ -7,4 +7,5 @@
 .card-img-top:hover {
   transform: scale(1.2);
   transition-duration: 1.4s;
+  z-index: 100;
 }
