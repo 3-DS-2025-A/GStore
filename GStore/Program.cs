@@ -1,5 +1,6 @@
 using GStore.Data;
 using GStore.Models;
+using GStore.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +20,9 @@ builder.Services.AddIdentity<Usuario, IdentityRole>(
     options => options.SignIn.RequireConfirmedEmail = false
 ).AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
+
+builder.Services.AddTransient<IUsuarioService, UsuarioService>();
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 var app = builder.Build();
 
