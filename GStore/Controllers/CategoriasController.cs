@@ -13,10 +13,12 @@ namespace GStore.Controllers
     public class CategoriasController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IWebHostEnvironment _host;
 
-        public CategoriasController(AppDbContext context)
+        public CategoriasController(AppDbContext context, IWebHostEnvironment host)
         {
             _context = context;
+            _host = host;
         }
 
         // GET: Categorias
@@ -54,12 +56,26 @@ namespace GStore.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Foto")] Categoria categoria)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Foto")] Categoria categoria, IFormFile Arquivo)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(categoria);
                 await _context.SaveChangesAsync();
+
+                if (Arquivo != null)
+                {
+                    string nomeArquivo = categoria.Id + Path.GetExtension(Arquivo.FileName);
+                    string caminho = Path.Combine(_host.WebRootPath, "img\\categorias");
+                    string novoArquivo = Path.Combine(caminho, nomeArquivo);
+                    using (var stream = new FileStream(novoArquivo, FileMode.Create))
+                    {
+                        Arquivo.CopyTo(stream);
+                    }
+                    categoria.Foto = "\\img\\categorias\\" + nomeArquivo;
+                    await _context.SaveChangesAsync();
+                }
+                TempData["Success"] = "Categoria Cadastrada com Sucesso!";
                 return RedirectToAction(nameof(Index));
             }
             return View(categoria);
